@@ -3,7 +3,6 @@ import { Redirect ,BrowserRouter, Route } from 'react-router-dom'
 import {MainContext, DEFAULT_STATE} from "./provider";
 import cookie from 'react-cookies'
 import {Button,ButtonToolbar, FormCheck, Form, FormGroup} from 'react-bootstrap';
-
 import server from '../config.json';
 
 class MainPage extends React.Component {
@@ -15,10 +14,8 @@ class MainPage extends React.Component {
       }
 
       setRedirect = () => {
-        this.setState({
-          redirect: true
-        })
-      }  
+        window.location='http://localhost:3000/test/test';
+      } 
       
       renderRedirect = () => {
         if (this.state.redirect) {
@@ -32,7 +29,6 @@ class MainPage extends React.Component {
 
 
     render() {
-      cookie.save('useriddd','testttt');
       //const [isAuthenticated, userHasAuthenticated] = useState(false);
         return (
             <BrowserRouter>
@@ -40,7 +36,7 @@ class MainPage extends React.Component {
             {this.state.sess || 'cookie'}                             
                     <Form>
                         <Form.Group>      
-                          <a href={server.url+'/auth/facebook'}>{server.url+'/auth/facebook'} testtest</a>                      
+                          <a href={server.url+'/auth/facebook'}>{server.url+'/auth/facebook'} don't click</a>                      
                             {this.renderRedirect()}
                             <button onClick={this.setRedirect}>Redirect1</button>
                         </Form.Group>

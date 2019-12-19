@@ -1,3 +1,5 @@
 {
-    "url":"https://localhost"
+    "apiUrl" :"https://loyalter.appspot.com",
+    "apiUrl1" :"https://localhost",
+    "url":"http://localhost:3000"
 }
