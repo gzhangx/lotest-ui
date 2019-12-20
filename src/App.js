@@ -3,22 +3,21 @@ import logo from './logo.svg';
 import './App.css';
 import server from './config.json';
 import MainPage from './components/MainPage';
+import CustomersPage from './components/Customers';
 import pick from 'lodash/pick';
 import uuid from 'uuid';
+import {MainContext} from './components/provider';
+import {getInitAuthState, addAuthHdr} from './components/auth';
 
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 
-const MainContext = React.createContext({});
 function testfunc() {
-  const {session, sessionSig} = getInitAuthState();
   fetch(server.apiUrl+'/sendSMS', {
     method: 'post',
     //credentials: 'include',
     mode: 'cors',
     //credentials: 'include',
-    headers: {'Content-Type':'application/json', 
-      egcookie:`egteam:sess=${session}; egteam:sess.sig=${sessionSig}`,
-    },
+    headers: addAuthHdr({'Content-Type':'application/json'}),
     body: JSON.stringify({
       "message":"a message from gang 1 with save",
       "from":"+12162848800",
@@ -42,24 +41,6 @@ class About extends React.Component {
   }
 }
 
-function getInitAuthState(add) {
-  const egAuthStr = localStorage.getItem('egAuthState');
-  if (!egAuthStr) {
-    const auth = {
-      sec: `sec_${uuid.v1()}`,
-      pub: `pub_${uuid.v1()}`,
-    };
-    localStorage.setItem('egAuthState', JSON.stringify(auth));
-  }else {
-    if (add) {
-      const auth  = Object.assign({}, JSON.parse(egAuthStr), add);      
-      console.log('Storing');
-      console.log(auth);
-      localStorage.setItem('egAuthState', JSON.stringify(auth));
-    }
-    return JSON.parse(egAuthStr);
-  }
-}
 function App() {
   const url = server.url;
   const [authInfo, setAuthInfo] = useState(getInitAuthState());
@@ -76,6 +57,7 @@ function App() {
           <aside>
             <Link to={`/`}>Dashboard</Link>  
             <div><Link to={`/about`}>About</Link></div>
+            <div><Link to={`/customers`}>Customers</Link></div>
             <div><Link to={`/auth/facebook`}>Facebook Login</Link></div>
             <button onClick={testfunc}>Send SMS</button>
           </aside>
@@ -83,6 +65,7 @@ function App() {
         <main>
           <Route exact path="/" component={MainPage} />
           <Route path="/about" component={About} />
+          <Route path="/customers" component={CustomersPage} />
           <Route path='/auth/facebook' component={() => { 
             const dataStr = JSON.stringify({url:server.url+'/auth/cb/facebook', sec:authInfo.sec, pub:authInfo.pub});
               const st = Buffer.from(dataStr).toString('base64');
