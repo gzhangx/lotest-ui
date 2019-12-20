@@ -13,8 +13,12 @@ function testfunc() {
   const {session, sessionSig} = getInitAuthState();
   fetch(server.apiUrl+'/sendSMS', {
     method: 'post',
-    headers: {'Content-Type':'application/json', 'Authorization':'Basic Z3poYW5nOnRlc3Q=',
-  Cookie:`egteam:sess=${session};egteam:sess.sig${sessionSig}`},
+    //credentials: 'include',
+    mode: 'cors',
+    //credentials: 'include',
+    headers: {'Content-Type':'application/json', 
+      egcookie:`egteam:sess=${session}; egteam:sess.sig=${sessionSig}`,
+    },
     body: JSON.stringify({
       "message":"a message from gang 1 with save",
       "from":"+12162848800",
