@@ -4,6 +4,7 @@ import './App.css';
 import server from './config.json';
 import MainPage from './components/MainPage';
 import CustomersPage from './components/Customers';
+import AddCustomer from './components/AddCustomer';
 import pick from 'lodash/pick';
 import uuid from 'uuid';
 import {MainContext} from './components/provider';
@@ -58,6 +59,7 @@ function App() {
             <Link to={`/`}>Dashboard</Link>  
             <div><Link to={`/about`}>About</Link></div>
             <div><Link to={`/customers`}>Customers</Link></div>
+            <div><Link to={`/AddCustomer`}>AddCustomer</Link></div>
             <div><Link to={`/auth/facebook`}>Facebook Login</Link></div>
             <button onClick={testfunc}>Send SMS</button>
           </aside>
@@ -66,6 +68,7 @@ function App() {
           <Route exact path="/" component={MainPage} />
           <Route path="/about" component={About} />
           <Route path="/customers" component={CustomersPage} />
+          <Route path="/AddCustomer" component={AddCustomer} />
           <Route path='/auth/facebook' component={() => { 
             const dataStr = JSON.stringify({url:server.url+'/auth/cb/facebook', sec:authInfo.sec, pub:authInfo.pub});
               const st = Buffer.from(dataStr).toString('base64');
